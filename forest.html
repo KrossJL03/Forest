@@ -1,0 +1,274 @@
+<html>
+<head>
+
+	<title>Digital Pet Game Thing</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<style>
+body{
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11pt;
+}
+
+#content{
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 50px 100px 50px 200px;
+	display: inline-block;
+}
+
+nav{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: #fc6;
+	width: 150px;
+	height: 100%;
+	box-sizing: border-box;
+	color: #c60;
+	display: inline-block;
+	margin: 0px 50px 0px 0px;
+}
+
+nav ul{
+	margin: 0px;
+	padding: 0px;
+}
+
+nav ul li{
+	list-style-type: none;
+	border-bottom: 1px solid #f63;
+	border-top: 1px solid #ff9;
+	padding: 5px;
+	font-size: 10pt;
+	text-transform: uppercase;
+}
+
+nav ul li:hover{
+	background: #f93;
+	color: #ff9;
+	border-top: 1px solid #f63;
+	border-bottom: 1px solid #ff9;
+}
+
+#menu{
+	width: 50px;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+#menu ul{
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu ul li{
+	list-style-type: none;
+	border-radius: 5px 0px 0px 5px;
+	background: #fc6;
+	height: 50px;
+	width: 50px;
+	margin: 10px 0px 10px 0px;
+	overflow: hidden;
+}
+
+#menu ul li:hover{
+	background: #f93;
+}
+
+#popup{
+	background: rgba(0,0,0,.7);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 10;
+	padding: 100px;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+#window{
+	border: 10px solid #fc6;
+	border-radius: 10px;
+	background: #fff;
+	padding: 20px;
+	width: 400px;
+}
+
+.exit{
+	border-radius: 0px 0px 0px 15px;
+	background: #fc6;
+	width: 25px;
+	height: 28px;
+	padding: 0px 2px 0px 0px;
+	box-sizing: border-box;
+	font-weight: bolder;
+	color: #fff;
+	text-align: right;
+	display: block;
+	cursor: pointer;
+}
+
+#window .exit{
+	float: right;
+	margin: -22px -20px 0px 0px;
+}
+
+
+#foraging{
+	height: 100%;
+	width: 100%;
+	max-width: 600px;
+	background: #999;
+	box-sizing: border-box;
+	border: 1px solid #000;
+	display: table;
+}
+
+#foraging span{
+	display: table-row;
+}
+
+#climbing,
+#walking,
+#digging{
+	width: 100%;
+	height: 33%;
+	box-sizing: border-box;
+	background: rgba(0,0,0,.5);
+	font-size: 30pt;
+	font-weight: bolder;
+	color: #ccc;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	cursor: pointer;
+	
+	transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+}
+
+#walking{ 
+	height: 34%; 
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+#climbing:hover,
+#walking:hover,
+#digging:hover{
+	background: none;
+	color: #000;
+}
+	
+
+</style>
+
+</head>
+<body>
+
+<div id="popup"><center>
+	<div id="window">
+		<div class="exit">X</div>
+		<div id="loot"></div>
+	</div>
+</center></div>
+
+<div id="menu">
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+</div>
+
+<nav>
+HOME
+	<ul>
+		<li>Link 1</li>
+		<li>Link 2</li>
+		<li>Link 3</li>
+		<li>Link 4</li>
+		<li>Link 5</li>
+		<li>Link 6</li>
+	</ul>
+</nav>
+
+<div id="content"><center>
+	<div id="foraging">
+		<span><div id="climbing">Climbing</div></span>
+		<span><div id="walking">Walking</div></span>
+		<span><div id="digging">Digging</div></span>
+	</div>
+</center></div>
+
+
+
+
+
+</body>
+
+<script>
+
+var masterItems 	= [];
+
+var climbingItems 	= [];
+var walkingItems 	= [];
+var diggingItems 	= [];
+
+function item(name, image, type){
+	this.name		= name;
+	this.image		= image;
+	this.type		= type;
+}
+
+masterItems.push(new item("Twig"			, null, "Material");	// 0
+masterItems.push(new item("Branch"			, null, "Material");	// 1
+masterItems.push(new item("Broken Branch"	, null, "Material");	// 2
+masterItems.push(new item("Pebble"			, null, "Material");	// 3
+masterItems.push(new item("Rock"			, null, "Material");	// 4
+masterItems.push(new item("Dirt"			, null, "Material");	// 5
+masterItems.push(new item("Mud"				, null, "Material");	// 6
+masterItems.push(new item("Dropping"		, null, "Material");	// 7 
+masterItems.push(new item("Do-Do"			, null, "Material");	// 8
+masterItems.push(new item("POO"				, null, "Material");	// 9
+
+masterItems.push(new item("Firefly"			, null, "Bug");			// 10
+masterItems.push(new item("Honey Bee"		, null, "Bug");			// 11
+masterItems.push(new item("Butterfly"		, null, "Bug");			// 12
+masterItems.push(new item("Lighting Bug"	, null, "Bug");			// 13
+masterItems.push(new item("Wyrm"			, null, "Bug");			// 14
+masterItems.push(new item("Aunt"			, null, "Bug");			// 15
+
+//masterItems.push(new item("", null, "Seed");
+
+//masterItems.push(new item("", null, "Fruit");
+
+//masterItems.push(new item("", null, "");
+
+climbingItems.push(masterItems[13]);
+climbingItems.push(masterItems[12]);
+
+walkingItems.push(masterItems[10]);
+walkingItems.push(masterItems[11]);
+
+diggingItems.push(masterItems[14]);
+diggingItems.push(masterItems[15]);
+
+
+
+
+
+</script>
+</html>
